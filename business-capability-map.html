@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BizCap Atlas — Business Capability Maps</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080e1a;
+    --bg2: #0d1628;
+    --bg3: #111e35;
+    --surface: #152238;
+    --surface2: #1c2e47;
+    --border: #1f3356;
+    --accent: #00d4aa;
+    --accent2: #0090ff;
+    --accent3: #f7c948;
+    --sf-color: #00a1e0;
+    --ai-color: #9b59f5;
+    --both-color: #00d4aa;
+    --text: #e8edf5;
+    --text2: #8fa3bf;
+    --text3: #5a7599;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(8,14,26,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+  }
+
+  .logo-icon svg { width: 20px; height: 20px; }
+
+  .logo-text {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text span { color: var(--accent); }
+
+  nav { display: flex; align-items: center; gap: 32px; }
+
+  nav a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    transition: color 0.2s;
+  }
+
+  nav a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: linear-gradient(135deg, var(--accent), #00b894);
+    color: var(--bg) !important;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 600 !important;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 140px 48px 100px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,170,0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0,144,255,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(31,51,86,0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(31,51,86,0.3) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,212,170,0.1);
+    border: 1px solid rgba(0,212,170,0.25);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 76px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  .hero h1 .line2 { color: var(--accent); }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text2);
+    max-width: 600px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 64px;
+    position: relative;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-num span { color: var(--accent); }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text3);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  /* ===== LEGEND SECTION ===== */
+  .legend-section {
+    padding: 48px;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .legend-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .legend-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text3);
+  }
+
+  .legend-items {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .legend-dot {
+    width: 14px; height: 14px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .legend-dot.sf { background: var(--sf-color); }
+  .legend-dot.ai { background: var(--ai-color); }
+  .legend-dot.both { background: var(--both-color); }
+  .legend-dot.manual { background: var(--surface2); border: 1px solid var(--border); }
+
+  /* ===== MAIN TOOL SECTION ===== */
+  .tool-section {
+    padding: 80px 48px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .section-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .section-sub {
+    color: var(--text2);
+    font-size: 16px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ===== SELECTOR ===== */
+  .selector-bar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .select-group label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text3);
+  }
+
+  .custom-select {
+    position: relative;
+  }
+
+  .custom-select select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 44px 14px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  .custom-select select:hover { border-color: var(--text3); }
+  .custom-select select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,212,170,0.12); }
+
+  .custom-select::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--text3);
+    pointer-events: none;
+  }
+
+  .filter-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 2;
+    padding-bottom: 2px;
+  }
+
+  .filter-badge {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .filter-badge.all { background: rgba(255,255,255,0.06); border-color: var(--border); color: var(--text2); }
+  .filter-badge.sf { background: rgba(0,161,224,0.1); border-color: rgba(0,161,224,0.3); color: var(--sf-color); }
+  .filter-badge.ai { background: rgba(155,89,245,0.1); border-color: rgba(155,89,245,0.3); color: var(--ai-color); }
+  .filter-badge.both { background: rgba(0,212,170,0.1); border-color: rgba(0,212,170,0.3); color: var(--accent); }
+
+  .filter-badge.active.all { background: rgba(255,255,255,0.12); border-color: var(--text2); color: var(--text); }
+  .filter-badge.active.sf { background: rgba(0,161,224,0.2); border-color: var(--sf-color); color: #fff; }
+  .filter-badge.active.ai { background: rgba(155,89,245,0.2); border-color: var(--ai-color); color: #fff; }
+  .filter-badge.active.both { background: rgba(0,212,170,0.2); border-color: var(--accent); color: #fff; }
+
+  /* ===== CAPABILITY MAP ===== */
+  .cap-map-wrapper {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+  }
+
+  .cap-map-wrapper.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .cap-map-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+
+  .cap-map-title-block h2 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .cap-map-title-block p {
+    color: var(--text2);
+    font-size: 15px;
+    max-width: 500px;
+  }
+
+  .cap-map-summary {
+    display: flex;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .summary-chip {
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .summary-chip .chip-num {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .summary-chip .chip-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .summary-chip.sf { background: rgba(0,161,224,0.1); border: 1px solid rgba(0,161,224,0.25); }
+  .summary-chip.sf .chip-num { color: var(--sf-color); }
+  .summary-chip.sf .chip-label { color: rgba(0,161,224,0.7); }
+
+  .summary-chip.ai { background: rgba(155,89,245,0.1); border: 1px solid rgba(155,89,245,0.25); }
+  .summary-chip.ai .chip-num { color: var(--ai-color); }
+  .summary-chip.ai .chip-label { color: rgba(155,89,245,0.7); }
+
+  .summary-chip.both { background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.25); }
+  .summary-chip.both .chip-num { color: var(--accent); }
+  .summary-chip.both .chip-label { color: rgba(0,212,170,0.7); }
+
+  /* ===== CAPABILITY DOMAINS ===== */
+  .domains-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  .domain-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .domain-card:hover {
+    border-color: var(--text3);
+    transform: translateY(-2px);
+  }
+
+  .domain-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg3);
+  }
+
+  .domain-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .domain-name {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    line-height: 1.3;
+  }
+
+  .capabilities-list {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cap-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: var(--bg3);
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .cap-item:hover {
+    border-color: var(--border);
+    background: var(--surface2);
+  }
+
+  .cap-item.hidden { display: none; }
+
+  .cap-badge {
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .cap-badge.sf { background: var(--sf-color); }
+  .cap-badge.ai { background: var(--ai-color); }
+  .cap-badge.both { background: var(--accent); }
+  .cap-badge.manual { background: var(--surface2); border: 1px solid var(--border); }
+
+  .cap-name {
+    font-size: 13px;
+    font-weight: 500;
+    flex: 1;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .cap-tags {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .cap-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  .cap-tag.sf { background: rgba(0,161,224,0.15); color: var(--sf-color); }
+  .cap-tag.ai { background: rgba(155,89,245,0.15); color: var(--ai-color); }
+
+  /* ===== HOW IT WORKS ===== */
+  .how-section {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 96px 48px;
+  }
+
+  .how-grid {
+    max-width: 1100px;
+    margin: 48px auto 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .how-card {
+    background: var(--bg2);
+    padding: 40px 32px;
+    position: relative;
+  }
+
+  .how-num {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .how-icon {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+
+  .how-card h3 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .how-card p {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* ===== COMPARISON TABLE ===== */
+  .comparison-section {
+    padding: 96px 48px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .compare-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-top: 48px;
+  }
+
+  table.compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .compare-table thead tr {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .compare-table th {
+    padding: 16px 20px;
+    text-align: left;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text3);
+    white-space: nowrap;
+  }
+
+  .compare-table th:first-child { color: var(--text2); }
+
+  .compare-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .compare-table tbody tr:last-child td { border-bottom: none; }
+
+  .compare-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  .compare-table td:first-child {
+    font-weight: 600;
+    color: var(--text);
+    min-width: 160px;
+  }
+
+  .compare-table td:nth-child(2) {
+    color: var(--text2);
+    min-width: 180px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin: 2px;
+  }
+
+  .pill.sf { background: rgba(0,161,224,0.15); color: var(--sf-color); }
+  .pill.ai { background: rgba(155,89,245,0.15); color: var(--ai-color); }
+  .pill.check { background: rgba(0,212,170,0.15); color: var(--accent); }
+  .pill.x { background: rgba(255,80,80,0.1); color: #ff6b6b; }
+
+  /* ===== INSIGHTS SECTION ===== */
+  .insights-section {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 96px 48px;
+  }
+
+  .insights-grid {
+    max-width: 1100px;
+    margin: 48px auto 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .insight-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .insight-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; height: 3px;
+  }
+
+  .insight-card.sf::before { background: var(--sf-color); }
+  .insight-card.ai::before { background: var(--ai-color); }
+  .insight-card.strategy::before { background: var(--accent3); }
+
+  .insight-card:hover { border-color: var(--text3); }
+
+  .insight-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .insight-card h3 {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.2px;
+  }
+
+  .insight-card p {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 64px 48px 36px;
+  }
+
+  .footer-top {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr repeat(3, 1fr);
+    gap: 48px;
+    margin-bottom: 56px;
+  }
+
+  .footer-brand p {
+    font-size: 14px;
+    color: var(--text3);
+    margin-top: 16px;
+    line-height: 1.7;
+    max-width: 280px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text3);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--accent); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-bottom p {
+    font-size: 13px;
+    color: var(--text3);
+  }
+
+  .footer-bottom p span { color: var(--accent); }
+
+  .footer-badges {
+    display: flex;
+    gap: 10px;
+  }
+
+  .footer-badge {
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 11px;
+    color: var(--text3);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state {
+    text-align: center;
+    padding: 80px 40px;
+    color: var(--text3);
+  }
+
+  .empty-state .empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+
+  .empty-state h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text2);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    header { padding: 0 24px; }
+    nav { gap: 16px; }
+    nav a:not(.nav-cta) { display: none; }
+    .hero { padding: 120px 24px 80px; }
+    .hero-stats { gap: 28px; flex-wrap: wrap; }
+    .tool-section, .how-section, .comparison-section, .insights-section { padding: 60px 24px; }
+    .legend-section { padding: 28px 24px; }
+    .how-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    footer { padding: 48px 24px 28px; }
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 36px; }
+    .domains-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .selector-bar { flex-direction: column; }
+    .cap-map-summary { width: 100%; }
+    .cap-map-header { flex-direction: column; }
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in { animation: fadeUp 0.6s ease forwards; }
+  .fade-in-1 { animation-delay: 0.1s; opacity: 0; }
+  .fade-in-2 { animation-delay: 0.2s; opacity: 0; }
+  .fade-in-3 { animation-delay: 0.3s; opacity: 0; }
+  .fade-in-4 { animation-delay: 0.4s; opacity: 0; }
+
+  .pulse-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <a href="#" class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/>
+        <rect x="12" y="1" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+        <rect x="1" y="12" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+        <rect x="12" y="12" width="7" height="7" rx="1.5" fill="white" opacity="0.4"/>
+      </svg>
+    </div>
+    <span class="logo-text">BizCap<span>Atlas</span></span>
+  </a>
+  <nav>
+    <a href="#explorer">Explorer</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#insights">Insights</a>
+    <a href="#comparison">Compare</a>
+    <a href="#explorer" class="nav-cta">Build Map</a>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge">
+    <div class="pulse-dot"></div>
+    Business Capability Intelligence Platform
+  </div>
+  <h1 class="fade-in fade-in-1">
+    Map. Analyze.<br><span class="line2">Transform.</span>
+  </h1>
+  <p class="fade-in fade-in-2">
+    Explore business capability maps across every major industry. Identify what Salesforce delivers out-of-the-box and where AI can unlock your next competitive advantage.
+  </p>
+  <div class="hero-stats fade-in fade-in-4">
+    <div class="stat">
+      <div class="stat-num">12<span>+</span></div>
+      <div class="stat-label">Industries</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">48<span>+</span></div>
+      <div class="stat-label">Sectors</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">600<span>+</span></div>
+      <div class="stat-label">Capabilities</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3<span>x</span></div>
+      <div class="stat-label">Faster Mapping</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LEGEND ===== -->
+<div class="legend-section">
+  <div class="legend-inner">
+    <div class="legend-title">Capability Classification</div>
+    <div class="legend-items">
+      <div class="legend-item">
+        <div class="legend-dot sf"></div>
+        <span>Salesforce OOTB</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot ai"></div>
+        <span>AI-Powered</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot both"></div>
+        <span>Salesforce + AI</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot manual"></div>
+        <span>Custom / Manual</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="how-section" id="how-it-works">
+  <div class="section-header">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="section-title">Three Steps to Clarity</h2>
+    <p class="section-sub">From industry selection to actionable capability insights in seconds.</p>
+  </div>
+  <div class="how-grid" style="max-width:1100px;margin:48px auto 0;">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <div class="how-icon" style="background:rgba(0,212,170,0.1);">🏭</div>
+      <h3>Select Industry & Sector</h3>
+      <p>Choose from 12+ industries and 48+ sectors. Sectors dynamically filter based on your industry selection.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <div class="how-icon" style="background:rgba(0,144,255,0.1);">🗺️</div>
+      <h3>Explore Capability Map</h3>
+      <p>View a structured capability map organized by domain. Each capability is tagged with its delivery model.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <div class="how-icon" style="background:rgba(155,89,245,0.1);">⚡</div>
+      <h3>Identify Build Strategy</h3>
+      <p>Filter by Salesforce OOTB, AI-powered, or both to prioritize your transformation roadmap.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CAPABILITY EXPLORER ===== -->
+<section class="tool-section" id="explorer">
+  <div class="section-header">
+    <div class="section-eyebrow">Capability Explorer</div>
+    <h2 class="section-title">Build Your Capability Map</h2>
+    <p class="section-sub">Select an industry and sector to generate a comprehensive capability map.</p>
+  </div>
+
+  <div class="selector-bar">
+    <div class="select-group">
+      <label>Industry</label>
+      <div class="custom-select">
+        <select id="industrySelect">
+          <option value="">— Select Industry —</option>
+        </select>
+      </div>
+    </div>
+    <div class="select-group">
+      <label>Sector</label>
+      <div class="custom-select">
+        <select id="sectorSelect" disabled>
+          <option value="">— Select Sector —</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-badges">
+      <span style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-right:4px;">Filter:</span>
+      <button class="filter-badge all active" data-filter="all">All</button>
+      <button class="filter-badge sf" data-filter="sf">Salesforce OOTB</button>
+      <button class="filter-badge ai" data-filter="ai">AI-Powered</button>
+      <button class="filter-badge both" data-filter="both">SF + AI</button>
+    </div>
+  </div>
+
+  <div id="capMapContainer">
+    <div class="empty-state">
+      <div class="empty-icon">🗺️</div>
+      <h3>Select an Industry to Begin</h3>
+      <p>Choose an industry and sector from the dropdowns above to generate your capability map.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMPARISON TABLE ===== -->
+<section class="comparison-section" id="comparison">
+  <div class="section-header">
+    <div class="section-eyebrow">Platform Comparison</div>
+    <h2 class="section-title">Salesforce vs AI Capabilities</h2>
+    <p class="section-sub">Understand what each delivery model offers across key business functions.</p>
+  </div>
+  <div class="compare-table-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Capability Domain</th>
+          <th>Example Capabilities</th>
+          <th>Salesforce OOTB</th>
+          <th>AI-Enhanced</th>
+          <th>Integration Approach</th>
+          <th>Complexity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Customer Relationship</td>
+          <td style="color:var(--text2)">Lead mgmt, Opportunity tracking, Account 360</td>
+          <td><span class="pill sf">✓ Native CRM</span></td>
+          <td><span class="pill ai">AI Scoring</span></td>
+          <td><span class="pill check">Einstein + CRM</span></td>
+          <td style="color:#00d4aa">Low</td>
+        </tr>
+        <tr>
+          <td>Sales Automation</td>
+          <td style="color:var(--text2)">Pipeline mgmt, Forecasting, CPQ</td>
+          <td><span class="pill sf">✓ Sales Cloud</span></td>
+          <td><span class="pill ai">Predictive</span></td>
+          <td><span class="pill check">Native + Einstein</span></td>
+          <td style="color:#00d4aa">Low</td>
+        </tr>
+        <tr>
+          <td>Service & Support</td>
+          <td style="color:var(--text2)">Case mgmt, Knowledge, Field Service</td>
+          <td><span class="pill sf">✓ Service Cloud</span></td>
+          <td><span class="pill ai">AI Agents</span></td>
+          <td><span class="pill check">Agentforce</span></td>
+          <td style="color:var(--accent3)">Medium</td>
+        </tr>
+        <tr>
+          <td>Marketing</td>
+          <td style="color:var(--text2)">Campaign mgmt, Journey builder, Segmentation</td>
+          <td><span class="pill sf">✓ Marketing Cloud</span></td>
+          <td><span class="pill ai">Gen AI Copy</span></td>
+          <td><span class="pill check">Einstein + MC</span></td>
+          <td style="color:var(--accent3)">Medium</td>
+        </tr>
+        <tr>
+          <td>Financial Management</td>
+          <td style="color:var(--text2)">Revenue mgmt, Billing, Collections</td>
+          <td><span class="pill sf">✓ Revenue Cloud</span></td>
+          <td><span class="pill ai">Anomaly Detect</span></td>
+          <td><span class="pill check">SF + External AI</span></td>
+          <td style="color:#ff6b6b">High</td>
+        </tr>
+        <tr>
+          <td>Analytics & BI</td>
+          <td style="color:var(--text2)">Dashboards, Reports, Predictive analytics</td>
+          <td><span class="pill sf">✓ Tableau CRM</span></td>
+          <td><span class="pill ai">NLP Queries</span></td>
+          <td><span class="pill check">Einstein Analytics</span></td>
+          <td style="color:var(--accent3)">Medium</td>
+        </tr>
+        <tr>
+          <td>HR & Workforce</td>
+          <td style="color:var(--text2)">Workforce planning, Skills mapping</td>
+          <td><span class="pill x">Limited</span></td>
+          <td><span class="pill ai">AI Matching</span></td>
+          <td style="color:var(--text2)">External + SF API</td>
+          <td style="color:#ff6b6b">High</td>
+        </tr>
+        <tr>
+          <td>Supply Chain</td>
+          <td style="color:var(--text2)">Inventory, Procurement, Logistics</td>
+          <td><span class="pill x">Not Native</span></td>
+          <td><span class="pill ai">Demand Forecast</span></td>
+          <td style="color:var(--text2)">MuleSoft Integration</td>
+          <td style="color:#ff6b6b">High</td>
+        </tr>
+        <tr>
+          <td>Document Management</td>
+          <td style="color:var(--text2)">Contract lifecycle, DocGen, e-Sign</td>
+          <td><span class="pill sf">✓ DocuSign+</span></td>
+          <td><span class="pill ai">AI Extraction</span></td>
+          <td><span class="pill check">Einstein OCR</span></td>
+          <td style="color:var(--accent3)">Medium</td>
+        </tr>
+        <tr>
+          <td>Risk & Compliance</td>
+          <td style="color:var(--text2)">Audit trails, Policy mgmt, Regulatory reporting</td>
+          <td><span class="pill sf">✓ Shield</span></td>
+          <td><span class="pill ai">Pattern Detect</span></td>
+          <td><span class="pill check">SF Shield + AI</span></td>
+          <td style="color:var(--accent3)">Medium</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== INSIGHTS ===== -->
+<section class="insights-section" id="insights">
+  <div class="section-header">
+    <div class="section-eyebrow">Strategic Insights</div>
+    <h2 class="section-title">Build Smarter</h2>
+    <p class="section-sub">Key principles for leveraging Salesforce and AI in your capability roadmap.</p>
+  </div>
+  <div class="insights-grid">
+    <div class="insight-card sf">
+      <div class="insight-icon">☁️</div>
+      <h3>Maximize Salesforce OOTB First</h3>
+      <p>Salesforce natively covers ~60% of CRM, Sales, Service, and Marketing capabilities. Leverage these before custom development to reduce TCO and accelerate time-to-value.</p>
+    </div>
+    <div class="insight-card ai">
+      <div class="insight-icon">🤖</div>
+      <h3>AI Amplifies, Doesn't Replace</h3>
+      <p>AI capabilities like Einstein, Agentforce, and custom LLMs work best layered on top of structured Salesforce data. Clean CRM data is the prerequisite for effective AI.</p>
+    </div>
+    <div class="insight-card strategy">
+      <div class="insight-icon">🎯</div>
+      <h3>Identify Your AI-First Opportunities</h3>
+      <p>Repetitive, data-intensive processes — document processing, lead scoring, case routing — are highest-ROI targets for AI automation across every industry.</p>
+    </div>
+    <div class="insight-card sf">
+      <div class="insight-icon">🔗</div>
+      <h3>MuleSoft Bridges the Gap</h3>
+      <p>For capabilities outside Salesforce's core (supply chain, HR, ERP), MuleSoft integration enables a unified data layer that makes AI across the enterprise possible.</p>
+    </div>
+    <div class="insight-card ai">
+      <div class="insight-icon">⚡</div>
+      <h3>Agentforce Changes the Service Model</h3>
+      <p>Autonomous AI agents built on Salesforce can now handle L1-L2 service cases end-to-end, fundamentally changing how service capabilities are staffed and measured.</p>
+    </div>
+    <div class="insight-card strategy">
+      <div class="insight-icon">📊</div>
+      <h3>Capability Maps Drive Buy vs. Build</h3>
+      <p>A clear capability map with OOTB and AI classification directly informs your buy-build-partner decisions, saving months of architecture and procurement effort.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="7" height="7" rx="1.5" fill="white" opacity="0.9"/>
+            <rect x="12" y="1" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+            <rect x="1" y="12" width="7" height="7" rx="1.5" fill="white" opacity="0.6"/>
+            <rect x="12" y="12" width="7" height="7" rx="1.5" fill="white" opacity="0.4"/>
+          </svg>
+        </div>
+        <span class="logo-text">BizCap<span>Atlas</span></span>
+      </div>
+      <p>The definitive business capability mapping platform for enterprise architects, consultants, and transformation leaders.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <ul>
+        <li><a href="#">Capability Explorer</a></li>
+        <li><a href="#">Industry Maps</a></li>
+        <li><a href="#">Comparison Tool</a></li>
+        <li><a href="#">Roadmap Builder</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Industries</h4>
+      <ul>
+        <li><a href="#">Financial Services</a></li>
+        <li><a href="#">Healthcare</a></li>
+        <li><a href="#">Retail & Commerce</a></li>
+        <li><a href="#">Manufacturing</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">Salesforce Docs</a></li>
+        <li><a href="#">AI Playbook</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 BizCap<span>Atlas</span>. Built for enterprise transformation teams.</p>
+    <div class="footer-badges">
+      <span class="footer-badge">Salesforce Partner</span>
+      <span class="footer-badge">AI-Ready</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// DATA: Industries, Sectors, and Capability Maps
+// ============================================================
+
+const DATA = {
+  industries: [
+    {
+      id: "financial-services",
+      name: "Financial Services",
+      description: "Banking, insurance, capital markets and wealth management capabilities",
+      sectors: [
+        { id: "retail-banking", name: "Retail Banking" },
+        { id: "commercial-banking", name: "Commercial Banking" },
+        { id: "investment-banking", name: "Investment Banking" },
+        { id: "insurance", name: "Insurance" },
+        { id: "wealth-management", name: "Wealth Management" },
+        { id: "fintech", name: "FinTech & Payments" },
+      ]
+    },
+    {
+      id: "healthcare",
+      name: "Healthcare & Life Sciences",
+      description: "Hospitals, pharma, medtech and health insurance capabilities",
+      sectors: [
+        { id: "hospital-health", name: "Hospital & Health Systems" },
+        { id: "pharma", name: "Pharmaceuticals" },
+        { id: "medtech", name: "Medical Devices & Tech" },
+        { id: "health-insurance", name: "Health Insurance (Payers)" },
+        { id: "biotech", name: "Biotechnology" },
+      ]
+    },
+    {
+      id: "retail",
+      name: "Retail & Consumer Goods",
+      description: "Omnichannel retail, ecommerce and consumer brand capabilities",
+      sectors: [
+        { id: "ecommerce", name: "eCommerce & Direct-to-Consumer" },
+        { id: "brick-mortar", name: "Brick & Mortar Retail" },
+        { id: "cpg", name: "Consumer Packaged Goods" },
+        { id: "fashion-apparel", name: "Fashion & Apparel" },
+        { id: "grocery", name: "Grocery & Food Retail" },
+      ]
+    },
+    {
+      id: "manufacturing",
+      name: "Manufacturing & Industrial",
+      description: "Discrete, process manufacturing, and industrial operations capabilities",
+      sectors: [
+        { id: "automotive", name: "Automotive" },
+        { id: "aerospace", name: "Aerospace & Defense" },
+        { id: "industrial", name: "Industrial Equipment" },
+        { id: "chemicals", name: "Chemicals & Materials" },
+        { id: "electronics", name: "Electronics Manufacturing" },
+      ]
+    },
+    {
+      id: "technology",
+      name: "Technology & Software",
+      description: "SaaS, platforms, infrastructure, and IT services capabilities",
+      sectors: [
+        { id: "saas", name: "SaaS & Cloud Software" },
+        { id: "hardware", name: "Hardware & Semiconductors" },
+        { id: "telecom", name: "Telecommunications" },
+        { id: "it-services", name: "IT Services & Consulting" },
+        { id: "cybersecurity", name: "Cybersecurity" },
+      ]
+    },
+    {
+      id: "energy",
+      name: "Energy & Utilities",
+      description: "Oil & gas, renewables, and utility operations capabilities",
+      sectors: [
+        { id: "oil-gas", name: "Oil & Gas" },
+        { id: "renewables", name: "Renewables & Clean Energy" },
+        { id: "utilities", name: "Electric & Gas Utilities" },
+        { id: "mining", name: "Mining & Resources" },
+      ]
+    },
+    {
+      id: "public-sector",
+      name: "Public Sector & Government",
+      description: "Federal, state, local government, and defense capabilities",
+      sectors: [
+        { id: "federal", name: "Federal Government" },
+        { id: "state-local", name: "State & Local Government" },
+        { id: "defense", name: "Defense & National Security" },
+        { id: "education", name: "Education & Research" },
+        { id: "nonprofit", name: "Non-Profit & NGO" },
+      ]
+    },
+    {
+      id: "media",
+      name: "Media & Entertainment",
+      description: "Broadcasting, streaming, gaming and advertising capabilities",
+      sectors: [
+        { id: "streaming", name: "Streaming & OTT" },
+        { id: "gaming", name: "Gaming & eSports" },
+        { id: "publishing", name: "Publishing & News" },
+        { id: "advertising", name: "Advertising & Marketing Tech" },
+      ]
+    },
+    {
+      id: "real-estate",
+      name: "Real Estate & Construction",
+      description: "Commercial, residential real estate and construction capabilities",
+      sectors: [
+        { id: "commercial-re", name: "Commercial Real Estate" },
+        { id: "residential-re", name: "Residential Real Estate" },
+        { id: "construction", name: "Construction & Engineering" },
+        { id: "property-mgmt", name: "Property Management" },
+      ]
+    },
+    {
+      id: "logistics",
+      name: "Transportation & Logistics",
+      description: "Freight, last-mile, and supply chain operations capabilities",
+      sectors: [
+        { id: "freight", name: "Freight & Cargo" },
+        { id: "last-mile", name: "Last-Mile Delivery" },
+        { id: "airline", name: "Airlines & Aviation" },
+        { id: "maritime", name: "Maritime & Shipping" },
+      ]
+    },
+    {
+      id: "hospitality",
+      name: "Hospitality & Travel",
+      description: "Hotels, restaurants, tourism and travel service capabilities",
+      sectors: [
+        { id: "hotels", name: "Hotels & Resorts" },
+        { id: "restaurants", name: "Restaurants & Food Service" },
+        { id: "travel", name: "Travel & Tourism" },
+        { id: "events", name: "Events & MICE" },
+      ]
+    },
+    {
+      id: "professional-services",
+      name: "Professional Services",
+      description: "Consulting, legal, accounting and advisory capabilities",
+      sectors: [
+        { id: "management-consulting", name: "Management Consulting" },
+        { id: "legal", name: "Legal Services" },
+        { id: "accounting", name: "Accounting & Tax" },
+        { id: "hr-services", name: "HR & Staffing Services" },
+      ]
+    }
+  ]
+};
+
+// ============================================================
+// CAPABILITY MAP TEMPLATES PER INDUSTRY
+// ============================================================
+// type: "sf" = Salesforce OOTB, "ai" = AI-powered, "both" = SF+AI, "manual" = custom/manual
+
+const CAP_MAPS = {
+  "financial-services": {
+    description: "End-to-end capabilities for banking, insurance, wealth management and financial operations.",
+    domains: [
+      {
+        name: "Client Acquisition & Onboarding",
+        icon: "🤝",
+        color: "#00a1e0",
+        caps: [
+          { name: "Lead Generation & Nurturing", type: "both" },
+          { name: "KYC / AML Verification", type: "ai" },
+          { name: "Digital Account Opening", type: "sf" },
+          { name: "Credit Decisioning", type: "ai" },
+          { name: "e-Signature & Documentation", type: "sf" },
+          { name: "Onboarding Journey Orchestration", type: "both" },
+        ]
+      },
+      {
+        name: "Relationship Management",
+        icon: "💼",
+        color: "#9b59f5",
+        caps: [
+          { name: "Client 360° View", type: "sf" },
+          { name: "Relationship Banker Console", type: "sf" },
+          { name: "Next Best Action (NBA)", type: "both" },
+          { name: "Portfolio Monitoring Alerts", type: "ai" },
+          { name: "Client Segmentation & Tiering", type: "both" },
+          { name: "Life Event Detection", type: "ai" },
+        ]
+      },
+      {
+        name: "Product & Service Delivery",
+        icon: "📦",
+        color: "#00d4aa",
+        caps: [
+          { name: "Loan & Mortgage Origination", type: "sf" },
+          { name: "Product Recommendations", type: "ai" },
+          { name: "Pricing & Rate Management", type: "sf" },
+          { name: "Subscription & Fee Management", type: "sf" },
+          { name: "Cross-sell / Upsell Engine", type: "both" },
+        ]
+      },
+      {
+        name: "Risk & Compliance",
+        icon: "🛡️",
+        color: "#f7c948",
+        caps: [
+          { name: "Regulatory Reporting Automation", type: "ai" },
+          { name: "Fraud Detection & Prevention", type: "ai" },
+          { name: "Audit Trail & Data Lineage", type: "sf" },
+          { name: "Model Risk Management", type: "ai" },
+          { name: "Policy & Procedure Management", type: "sf" },
+          { name: "Sanctions Screening", type: "ai" },
+        ]
+      },
+      {
+        name: "Customer Service & Operations",
+        icon: "🎧",
+        color: "#00a1e0",
+        caps: [
+          { name: "Omnichannel Service Console", type: "sf" },
+          { name: "AI-Powered Virtual Agent", type: "both" },
+          { name: "Case Management & Routing", type: "sf" },
+          { name: "Knowledge Base Management", type: "sf" },
+          { name: "Dispute & Claims Resolution", type: "both" },
+          { name: "Voice of Customer Analytics", type: "ai" },
+        ]
+      },
+      {
+        name: "Analytics & Reporting",
+        icon: "📊",
+        color: "#9b59f5",
+        caps: [
+          { name: "Revenue & Profitability Reporting", type: "sf" },
+          { name: "Predictive Churn Modeling", type: "ai" },
+          { name: "Campaign Performance Analytics", type: "sf" },
+          { name: "Regulatory Dashboards", type: "sf" },
+          { name: "AI-Driven Forecasting", type: "ai" },
+        ]
+      }
+    ]
+  },
+
+  "healthcare": {
+    description: "Patient-centric capabilities spanning care delivery, operations, and life sciences R&D.",
+    domains: [
+      {
+        name: "Patient Engagement",
+        icon: "🏥",
+        color: "#00d4aa",
+        caps: [
+          { name: "Patient Portal & Self-Service", type: "sf" },
+          { name: "Care Coordination Console", type: "sf" },
+          { name: "Appointment Scheduling", type: "sf" },
+          { name: "Personalized Health Outreach", type: "both" },
+          { name: "Remote Patient Monitoring", type: "ai" },
+          { name: "AI Health Coaching", type: "ai" },
+        ]
+      },
+      {
+        name: "Clinical Operations",
+        icon: "🩺",
+        color: "#00a1e0",
+        caps: [
+          { name: "Provider Network Management", type: "sf" },
+          { name: "Referral Management", type: "sf" },
+          { name: "Prior Authorization Automation", type: "ai" },
+          { name: "Clinical Documentation AI", type: "ai" },
+          { name: "Care Gap Identification", type: "both" },
+          { name: "Population Health Analytics", type: "ai" },
+        ]
+      },
+      {
+        name: "Revenue Cycle",
+        icon: "💰",
+        color: "#f7c948",
+        caps: [
+          { name: "Claims Processing & Adjudication", type: "both" },
+          { name: "Billing & Collections", type: "sf" },
+          { name: "Denial Management", type: "ai" },
+          { name: "Contract Management", type: "sf" },
+          { name: "Revenue Leakage Detection", type: "ai" },
+        ]
+      },
+      {
+        name: "Research & Development",
+        icon: "🔬",
+        color: "#9b59f5",
+        caps: [
+          { name: "Clinical Trial Management", type: "sf" },
+          { name: "Drug Discovery AI Assist", type: "ai" },
+          { name: "Regulatory Submission Tracking", type: "sf" },
+          { name: "Adverse Event Monitoring", type: "ai" },
+          { name: "Medical Affairs CRM", type: "sf" },
+        ]
+      },
+      {
+        name: "Compliance & Quality",
+        icon: "✅",
+        color: "#00d4aa",
+        caps: [
+          { name: "HIPAA Compliance Management", type: "sf" },
+          { name: "Quality Measure Reporting", type: "both" },
+          { name: "Incident & Safety Reporting", type: "sf" },
+          { name: "Audit Management", type: "sf" },
+          { name: "AI-Based Anomaly Detection", type: "ai" },
+        ]
+      }
+    ]
+  },
+
+  "retail": {
+    description: "Omnichannel commerce capabilities from customer acquisition through post-purchase loyalty.",
+    domains: [
+      {
+        name: "Customer Acquisition & Marketing",
+        icon: "📣",
+        color: "#00a1e0",
+        caps: [
+          { name: "Campaign Management", type: "sf" },
+          { name: "AI-Driven Personalization", type: "both" },
+          { name: "Customer Segmentation", type: "both" },
+          { name: "Social Commerce Integration", type: "sf" },
+          { name: "Influencer & Affiliate Management", type: "manual" },
+          { name: "Dynamic Pricing Engine", type: "ai" },
+        ]
+      },
+      {
+        name: "Commerce & Checkout",
+        icon: "🛒",
+        color: "#00d4aa",
+        caps: [
+          { name: "Storefront & Catalog Management", type: "sf" },
+          { name: "Cart & Checkout Optimization", type: "sf" },
+          { name: "AI Product Recommendations", type: "both" },
+          { name: "Promotions & Discounts Engine", type: "sf" },
+          { name: "Fraud Detection at Checkout", type: "ai" },
+          { name: "Buy Now Pay Later Integration", type: "manual" },
+        ]
+      },
+      {
+        name: "Fulfillment & Supply Chain",
+        icon: "📦",
+        color: "#f7c948",
+        caps: [
+          { name: "Order Management System", type: "sf" },
+          { name: "Inventory Forecasting AI", type: "ai" },
+          { name: "Warehouse Management", type: "manual" },
+          { name: "Last-Mile Delivery Tracking", type: "manual" },
+          { name: "Returns & Reverse Logistics", type: "sf" },
+          { name: "Supplier Collaboration Portal", type: "sf" },
+        ]
+      },
+      {
+        name: "Customer Service",
+        icon: "💬",
+        color: "#9b59f5",
+        caps: [
+          { name: "Contact Center & Case Mgmt", type: "sf" },
+          { name: "AI Chatbot & Virtual Agent", type: "both" },
+          { name: "Proactive Order Notifications", type: "both" },
+          { name: "Review & Sentiment Analysis", type: "ai" },
+          { name: "Loyalty Program Management", type: "sf" },
+        ]
+      },
+      {
+        name: "Analytics & Merchandising",
+        icon: "📈",
+        color: "#00a1e0",
+        caps: [
+          { name: "Sales & Revenue Analytics", type: "sf" },
+          { name: "Basket Analysis & Cross-sell AI", type: "ai" },
+          { name: "Planogram & Space Optimization", type: "ai" },
+          { name: "Customer Lifetime Value Scoring", type: "both" },
+          { name: "A/B Testing & Experimentation", type: "manual" },
+        ]
+      }
+    ]
+  },
+
+  "manufacturing": {
+    description: "Industrial and product manufacturing capabilities from design through after-sales service.",
+    domains: [
+      {
+        name: "Product Lifecycle Management",
+        icon: "⚙️",
+        color: "#f7c948",
+        caps: [
+          { name: "Design Collaboration & BOM", type: "manual" },
+          { name: "AI-Assisted Design Optimization", type: "ai" },
+          { name: "Product Change Management", type: "sf" },
+          { name: "Regulatory Compliance Tracking", type: "sf" },
+          { name: "Warranty Management", type: "sf" },
+        ]
+      },
+      {
+        name: "Sales & Distribution",
+        icon: "🚚",
+        color: "#00a1e0",
+        caps: [
+          { name: "Dealer & Channel Management", type: "sf" },
+          { name: "Configure-Price-Quote (CPQ)", type: "sf" },
+          { name: "Territory & Quota Management", type: "sf" },
+          { name: "Demand Forecasting AI", type: "ai" },
+          { name: "B2B Commerce Portal", type: "sf" },
+          { name: "Contract Lifecycle Management", type: "both" },
+        ]
+      },
+      {
+        name: "After-Sales Service",
+        icon: "🔧",
+        color: "#00d4aa",
+        caps: [
+          { name: "Field Service Management", type: "sf" },
+          { name: "Remote Asset Monitoring (IoT)", type: "both" },
+          { name: "Predictive Maintenance AI", type: "ai" },
+          { name: "Spare Parts Management", type: "sf" },
+          { name: "Technical Knowledge Base", type: "sf" },
+          { name: "Service Revenue Optimization", type: "both" },
+        ]
+      },
+      {
+        name: "Operations & Quality",
+        icon: "🏭",
+        color: "#9b59f5",
+        caps: [
+          { name: "Manufacturing Execution (MES)", type: "manual" },
+          { name: "Quality Control & Inspection AI", type: "ai" },
+          { name: "OEE / Performance Analytics", type: "both" },
+          { name: "Environmental Health & Safety", type: "sf" },
+          { name: "Supplier Quality Management", type: "sf" },
+        ]
+      }
+    ]
+  },
+
+  "technology": {
+    description: "Software, platform, and IT services capabilities from product development to customer success.",
+    domains: [
+      {
+        name: "Go-to-Market",
+        icon: "🚀",
+        color: "#00a1e0",
+        caps: [
+          { name: "Pipeline & Opportunity Management", type: "sf" },
+          { name: "Product-Led Growth Signals AI", type: "both" },
+          { name: "Demo & Trial Management", type: "sf" },
+          { name: "Competitive Intelligence AI", type: "ai" },
+          { name: "Partner Relationship Management", type: "sf" },
+          { name: "Usage-Based Pricing & Billing", type: "sf" },
+        ]
+      },
+      {
+        name: "Customer Success",
+        icon: "⭐",
+        color: "#00d4aa",
+        caps: [
+          { name: "Health Scoring & Churn Prediction", type: "both" },
+          { name: "Onboarding Journey Automation", type: "both" },
+          { name: "Support Case Management", type: "sf" },
+          { name: "NPS & Feedback Management", type: "sf" },
+          { name: "Renewal & Upsell Automation", type: "both" },
+          { name: "AI-Powered Q&A Bot", type: "both" },
+        ]
+      },
+      {
+        name: "Product Management",
+        icon: "🛠️",
+        color: "#9b59f5",
+        caps: [
+          { name: "Feature Request & Roadmap Mgmt", type: "manual" },
+          { name: "AI-Generated Product Insights", type: "ai" },
+          { name: "Release Planning & Tracking", type: "manual" },
+          { name: "Customer Feedback Synthesis AI", type: "ai" },
+          { name: "Beta & Early Access Programs", type: "sf" },
+        ]
+      },
+      {
+        name: "Revenue Operations",
+        icon: "💹",
+        color: "#f7c948",
+        caps: [
+          { name: "Revenue Forecasting AI", type: "both" },
+          { name: "Quote-to-Cash Automation", type: "sf" },
+          { name: "ARR / MRR Analytics", type: "sf" },
+          { name: "Commission Management", type: "sf" },
+          { name: "Territory Optimization AI", type: "ai" },
+          { name: "Deal Desk Automation", type: "both" },
+        ]
+      }
+    ]
+  },
+
+  "energy": {
+    description: "Energy production, distribution, and utility management capabilities.",
+    domains: [
+      {
+        name: "Asset & Field Operations",
+        icon: "⚡",
+        color: "#f7c948",
+        caps: [
+          { name: "Field Workforce Management", type: "sf" },
+          { name: "Predictive Asset Maintenance AI", type: "ai" },
+          { name: "Work Order Management", type: "sf" },
+          { name: "Remote Asset Monitoring", type: "both" },
+          { name: "Safety & Permitting", type: "sf" },
+        ]
+      },
+      {
+        name: "Customer & Retail Energy",
+        icon: "🏠",
+        color: "#00a1e0",
+        caps: [
+          { name: "Customer Account Management", type: "sf" },
+          { name: "Smart Meter Analytics AI", type: "ai" },
+          { name: "Rate & Program Enrollment", type: "sf" },
+          { name: "Outage Communication", type: "both" },
+          { name: "Energy Efficiency Recommendations", type: "ai" },
+          { name: "EV Charging Management", type: "sf" },
+        ]
+      },
+      {
+        name: "Trading & Supply",
+        icon: "📉",
+        color: "#9b59f5",
+        caps: [
+          { name: "Energy Trading & Risk Mgmt", type: "manual" },
+          { name: "Price Forecasting AI", type: "ai" },
+          { name: "Contract & Deal Management", type: "sf" },
+          { name: "Regulatory Compliance Reporting", type: "both" },
+          { name: "Carbon Credit Tracking", type: "ai" },
+        ]
+      },
+      {
+        name: "Sustainability",
+        icon: "🌱",
+        color: "#00d4aa",
+        caps: [
+          { name: "Emissions Tracking & Reporting", type: "both" },
+          { name: "Renewable Energy Certification", type: "sf" },
+          { name: "ESG Data Management", type: "both" },
+          { name: "AI Carbon Footprint Optimizer", type: "ai" },
+          { name: "Stakeholder Reporting", type: "sf" },
+        ]
+      }
+    ]
+  },
+
+  "public-sector": {
+    description: "Government, defense, and public administration capabilities for citizen and mission services.",
+    domains: [
+      {
+        name: "Citizen Services",
+        icon: "🏛️",
+        color: "#00a1e0",
+        caps: [
+          { name: "Citizen Portal & Self-Service", type: "sf" },
+          { name: "Case & Benefits Management", type: "sf" },
+          { name: "AI Document Processing", type: "ai" },
+          { name: "Multi-channel Service Delivery", type: "sf" },
+          { name: "Grievance & Appeals Management", type: "sf" },
+          { name: "AI-Assisted Eligibility Check", type: "both" },
+        ]
+      },
+      {
+        name: "Program Management",
+        icon: "📋",
+        color: "#9b59f5",
+        caps: [
+          { name: "Grant & Fund Management", type: "sf" },
+          { name: "Program Performance Analytics", type: "both" },
+          { name: "Contractor & Vendor Management", type: "sf" },
+          { name: "Outcome Measurement AI", type: "ai" },
+          { name: "Interagency Collaboration", type: "sf" },
+        ]
+      },
+      {
+        name: "Regulatory & Compliance",
+        icon: "⚖️",
+        color: "#f7c948",
+        caps: [
+          { name: "Licensing & Permitting", type: "sf" },
+          { name: "Inspection Management", type: "sf" },
+          { name: "Enforcement Case Management", type: "sf" },
+          { name: "AI Regulatory Risk Scoring", type: "ai" },
+          { name: "Audit & Investigation Mgmt", type: "sf" },
+        ]
+      },
+      {
+        name: "Intelligence & Analytics",
+        icon: "🔍",
+        color: "#00d4aa",
+        caps: [
+          { name: "Public Sentiment Analysis AI", type: "ai" },
+          { name: "Fraud & Waste Detection AI", type: "ai" },
+          { name: "Geospatial Analytics", type: "both" },
+          { name: "Policy Impact Modeling AI", type: "ai" },
+          { name: "Data Sharing & Interoperability", type: "sf" },
+        ]
+      }
+    ]
+  },
+
+  "media": {
+    description: "Content creation, distribution, audience monetization, and advertising capabilities.",
+    domains: [
+      {
+        name: "Content & Production",
+        icon: "🎬",
+        color: "#9b59f5",
+        caps: [
+          { name: "Content Management System", type: "sf" },
+          { name: "AI Content Generation Assist", type: "ai" },
+          { name: "Rights & Licensing Management", type: "sf" },
+          { name: "Production Workflow Automation", type: "both" },
+          { name: "AI Transcription & Subtitling", type: "ai" },
+        ]
+      },
+      {
+        name: "Audience & Engagement",
+        icon: "👥",
+        color: "#00a1e0",
+        caps: [
+          { name: "Subscriber Management", type: "sf" },
+          { name: "AI Recommendation Engine", type: "ai" },
+          { name: "Personalized Push Notifications", type: "both" },
+          { name: "Community & Fan Management", type: "sf" },
+          { name: "Churn Prediction AI", type: "both" },
+          { name: "Social Listening AI", type: "ai" },
+        ]
+      },
+      {
+        name: "Advertising & Monetization",
+        icon: "💰",
+        color: "#f7c948",
+        caps: [
+          { name: "Ad Sales CRM", type: "sf" },
+          { name: "Programmatic Ad Management", type: "manual" },
+          { name: "AI Audience Segmentation", type: "both" },
+          { name: "Campaign Performance Analytics", type: "sf" },
+          { name: "Sponsorship Management", type: "sf" },
+          { name: "Revenue Attribution AI", type: "ai" },
+        ]
+      },
+      {
+        name: "Distribution & Platform",
+        icon: "📡",
+        color: "#00d4aa",
+        caps: [
+          { name: "Multi-platform Distribution", type: "manual" },
+          { name: "CDN & Streaming Management", type: "manual" },
+          { name: "A/B Test & Optimization AI", type: "ai" },
+          { name: "Metadata & SEO Management", type: "both" },
+          { name: "Partner & Syndication Portal", type: "sf" },
+        ]
+      }
+    ]
+  },
+
+  "real-estate": {
+    description: "Property management, transaction, and development capabilities for real estate companies.",
+    domains: [
+      {
+        name: "Property & Listings",
+        icon: "🏢",
+        color: "#00d4aa",
+        caps: [
+          { name: "Property Portfolio Management", type: "sf" },
+          { name: "AI Property Valuation", type: "ai" },
+          { name: "Listing & MLS Integration", type: "manual" },
+          { name: "Virtual Tour & Media Mgmt", type: "manual" },
+          { name: "Property Performance Analytics", type: "both" },
+        ]
+      },
+      {
+        name: "Client & Deal Management",
+        icon: "🤝",
+        color: "#00a1e0",
+        caps: [
+          { name: "Buyer/Tenant CRM", type: "sf" },
+          { name: "Deal Pipeline & Stage Tracking", type: "sf" },
+          { name: "AI Matching (Client to Property)", type: "ai" },
+          { name: "Offer & Contract Management", type: "sf" },
+          { name: "Commission & Revenue Tracking", type: "sf" },
+          { name: "Lead Scoring & Routing AI", type: "both" },
+        ]
+      },
+      {
+        name: "Tenant & Lease Operations",
+        icon: "📄",
+        color: "#9b59f5",
+        caps: [
+          { name: "Lease Administration", type: "sf" },
+          { name: "Rent Collection & Billing", type: "sf" },
+          { name: "Maintenance Request Management", type: "sf" },
+          { name: "Predictive Maintenance AI", type: "ai" },
+          { name: "Tenant Satisfaction Tracking", type: "both" },
+        ]
+      },
+      {
+        name: "Development & Investment",
+        icon: "📐",
+        color: "#f7c948",
+        caps: [
+          { name: "Project Development Tracking", type: "sf" },
+          { name: "Investment Portfolio Analytics", type: "both" },
+          { name: "Market & Demand Analysis AI", type: "ai" },
+          { name: "Regulatory & Permitting Tracking", type: "sf" },
+          { name: "ESG & Sustainability Reporting", type: "both" },
+        ]
+      }
+    ]
+  },
+
+  "logistics": {
+    description: "Freight, last-mile delivery, and supply chain logistics capabilities.",
+    domains: [
+      {
+        name: "Sales & Customer Management",
+        icon: "📋",
+        color: "#00a1e0",
+        caps: [
+          { name: "Shipper & Customer CRM", type: "sf" },
+          { name: "Freight Quote & Pricing", type: "sf" },
+          { name: "Contract Lifecycle Management", type: "sf" },
+          { name: "Customer Portal", type: "sf" },
+          { name: "AI Rate Optimization", type: "both" },
+        ]
+      },
+      {
+        name: "Operations & Tracking",
+        icon: "🗺️",
+        color: "#f7c948",
+        caps: [
+          { name: "Shipment Tracking & Visibility", type: "both" },
+          { name: "Route Optimization AI", type: "ai" },
+          { name: "Driver & Fleet Management", type: "manual" },
+          { name: "Exception & Delay Management", type: "both" },
+          { name: "Warehouse Management", type: "manual" },
+          { name: "Predictive ETA AI", type: "ai" },
+        ]
+      },
+      {
+        name: "Carrier & Partner Management",
+        icon: "🚛",
+        color: "#9b59f5",
+        caps: [
+          { name: "Carrier Network Management", type: "sf" },
+          { name: "Carrier Scorecard & Analytics", type: "both" },
+          { name: "Digital Freight Marketplace", type: "manual" },
+          { name: "Contract Compliance Tracking", type: "sf" },
+          { name: "Capacity Planning AI", type: "ai" },
+        ]
+      },
+      {
+        name: "Customer Experience",
+        icon: "📱",
+        color: "#00d4aa",
+        caps: [
+          { name: "Proactive Delivery Notifications", type: "both" },
+          { name: "Claims Management", type: "sf" },
+          { name: "Customer Service Console", type: "sf" },
+          { name: "Delivery Preference AI", type: "ai" },
+          { name: "Returns Management", type: "sf" },
+        ]
+      }
+    ]
+  },
+
+  "hospitality": {
+    description: "Guest experience, revenue management, and hospitality operations capabilities.",
+    domains: [
+      {
+        name: "Guest Acquisition & Marketing",
+        icon: "✨",
+        color: "#f7c948",
+        caps: [
+          { name: "Campaign & Email Marketing", type: "sf" },
+          { name: "AI Personalized Offers", type: "both" },
+          { name: "Loyalty Program Management", type: "sf" },
+          { name: "Review & Reputation Mgmt AI", type: "ai" },
+          { name: "OTA Channel Management", type: "manual" },
+          { name: "Group Sales CRM", type: "sf" },
+        ]
+      },
+      {
+        name: "Reservation & Revenue",
+        icon: "📅",
+        color: "#00a1e0",
+        caps: [
+          { name: "Reservation & Booking Mgmt", type: "sf" },
+          { name: "Dynamic Pricing AI", type: "ai" },
+          { name: "Revenue Optimization (RMS)", type: "both" },
+          { name: "Group & Events Management", type: "sf" },
+          { name: "Ancillary Revenue Upsell AI", type: "both" },
+        ]
+      },
+      {
+        name: "Guest Experience",
+        icon: "🌟",
+        color: "#00d4aa",
+        caps: [
+          { name: "Guest Profile & Preferences", type: "sf" },
+          { name: "AI Concierge & Chatbot", type: "both" },
+          { name: "Personalized Itinerary AI", type: "ai" },
+          { name: "In-Stay Service Requests", type: "sf" },
+          { name: "Feedback & NPS Management", type: "sf" },
+          { name: "Mobile Check-in / Check-out", type: "manual" },
+        ]
+      },
+      {
+        name: "Operations & Housekeeping",
+        icon: "🔑",
+        color: "#9b59f5",
+        caps: [
+          { name: "Housekeeping Task Management", type: "sf" },
+          { name: "Preventive Maintenance AI", type: "ai" },
+          { name: "Staff Scheduling Optimization AI", type: "ai" },
+          { name: "Procurement & Inventory Mgmt", type: "manual" },
+          { name: "Incident & Safety Mgmt", type: "sf" },
+        ]
+      }
+    ]
+  },
+
+  "professional-services": {
+    description: "Consulting, legal, and professional advisory capabilities from engagement to delivery.",
+    domains: [
+      {
+        name: "Business Development",
+        icon: "🤝",
+        color: "#00a1e0",
+        caps: [
+          { name: "Opportunity & Proposal Mgmt", type: "sf" },
+          { name: "AI Win/Loss Analysis", type: "ai" },
+          { name: "Conflict of Interest Checking AI", type: "both" },
+          { name: "Relationship Intelligence AI", type: "ai" },
+          { name: "RFP Response Automation AI", type: "both" },
+          { name: "Pricing & Rate Management", type: "sf" },
+        ]
+      },
+      {
+        name: "Engagement Delivery",
+        icon: "📊",
+        color: "#9b59f5",
+        caps: [
+          { name: "Project & Resource Management", type: "sf" },
+          { name: "Time & Expense Tracking", type: "sf" },
+          { name: "Knowledge Management AI", type: "ai" },
+          { name: "AI Meeting Summarization", type: "ai" },
+          { name: "Deliverable & Document Mgmt", type: "sf" },
+          { name: "Quality & Review Workflows", type: "both" },
+        ]
+      },
+      {
+        name: "Talent & Workforce",
+        icon: "👤",
+        color: "#00d4aa",
+        caps: [
+          { name: "Talent Pipeline & Recruitment", type: "sf" },
+          { name: "Skills & Competency Tracking", type: "both" },
+          { name: "Resource Allocation AI", type: "ai" },
+          { name: "Learning & Development Mgmt", type: "sf" },
+          { name: "Performance Management", type: "sf" },
+        ]
+      },
+      {
+        name: "Client Management",
+        icon: "💎",
+        color: "#f7c948",
+        caps: [
+          { name: "Client Satisfaction (NPS/CSAT)", type: "sf" },
+          { name: "Account Health Scoring AI", type: "both" },
+          { name: "Billing & Collections", type: "sf" },
+          { name: "Contract Management", type: "sf" },
+          { name: "Thought Leadership Tracking", type: "manual" },
+        ]
+      }
+    ]
+  }
+};
+
+// ============================================================
+// DEFAULT MAP USED WHEN SECTOR IS SELECTED (INHERITS INDUSTRY)
+// ============================================================
+// For most sectors, we use the industry-level map but note the sector
+// Some sectors have overrides — add here as needed
+
+// ============================================================
+// INIT
+// ============================================================
+
+const industrySelect = document.getElementById('industrySelect');
+const sectorSelect = document.getElementById('sectorSelect');
+const capContainer = document.getElementById('capMapContainer');
+
+let currentFilter = 'all';
+let currentIndustry = null;
+
+// Populate industries
+DATA.industries.forEach(ind => {
+  const opt = document.createElement('option');
+  opt.value = ind.id;
+  opt.textContent = ind.name;
+  industrySelect.appendChild(opt);
+});
+
+industrySelect.addEventListener('change', () => {
+  const indId = industrySelect.value;
+  sectorSelect.innerHTML = '<option value="">— All Sectors —</option>';
+  sectorSelect.disabled = !indId;
+
+  if (indId) {
+    currentIndustry = DATA.industries.find(i => i.id === indId);
+    currentIndustry.sectors.forEach(sec => {
+      const opt = document.createElement('option');
+      opt.value = sec.id;
+      opt.textContent = sec.name;
+      sectorSelect.appendChild(opt);
+    });
+    renderMap(indId, null);
+  } else {
+    currentIndustry = null;
+    showEmpty();
+  }
+});
+
+sectorSelect.addEventListener('change', () => {
+  if (currentIndustry) {
+    renderMap(currentIndustry.id, sectorSelect.value || null);
+  }
+});
+
+// Filter buttons
+document.querySelectorAll('.filter-badge').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-badge').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    applyFilter();
+  });
+});
+
+function showEmpty() {
+  capContainer.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon">🗺️</div>
+      <h3>Select an Industry to Begin</h3>
+      <p>Choose an industry and sector from the dropdowns above to generate your capability map.</p>
+    </div>`;
+}
+
+function renderMap(industryId, sectorId) {
+  const industryData = DATA.industries.find(i => i.id === industryId);
+  const mapData = CAP_MAPS[industryId];
+
+  if (!mapData) {
+    capContainer.innerHTML = `<div class="empty-state"><div class="empty-icon">🔧</div><h3>Coming Soon</h3><p>Capability map for this industry is being developed.</p></div>`;
+    return;
+  }
+
+  let sectorLabel = '';
+  if (sectorId) {
+    const sec = industryData.sectors.find(s => s.id === sectorId);
+    sectorLabel = sec ? ` — ${sec.name}` : '';
+  }
+
+  // Count capabilities by type
+  let sfCount = 0, aiCount = 0, bothCount = 0;
+  mapData.domains.forEach(d => d.caps.forEach(c => {
+    if (c.type === 'sf') sfCount++;
+    else if (c.type === 'ai') aiCount++;
+    else if (c.type === 'both') bothCount++;
+  }));
+
+  const html = `
+    <div class="cap-map-wrapper" id="capMapInner">
+      <div class="cap-map-header">
+        <div class="cap-map-title-block">
+          <h2>${industryData.name}${sectorLabel}</h2>
+          <p>${mapData.description}</p>
+        </div>
+        <div class="cap-map-summary">
+          <div class="summary-chip sf">
+            <div class="chip-num">${sfCount}</div>
+            <div class="chip-label">Salesforce</div>
+          </div>
+          <div class="summary-chip ai">
+            <div class="chip-num">${aiCount}</div>
+            <div class="chip-label">AI Only</div>
+          </div>
+          <div class="summary-chip both">
+            <div class="chip-num">${bothCount}</div>
+            <div class="chip-label">SF + AI</div>
+          </div>
+        </div>
+      </div>
+      <div class="domains-grid" id="domainsGrid">
+        ${mapData.domains.map(domain => renderDomain(domain)).join('')}
+      </div>
+    </div>`;
+
+  capContainer.innerHTML = html;
+
+  requestAnimationFrame(() => {
+    const wrapper = document.getElementById('capMapInner');
+    if (wrapper) wrapper.classList.add('visible');
+  });
+
+  applyFilter();
+}
+
+function renderDomain(domain) {
+  const caps = domain.caps.map(cap => renderCap(cap)).join('');
+  return `
+    <div class="domain-card" data-domain="${domain.name}">
+      <div class="domain-header">
+        <div class="domain-icon" style="background:${domain.color}22;">${domain.icon}</div>
+        <div class="domain-name">${domain.name}</div>
+      </div>
+      <div class="capabilities-list">${caps}</div>
+    </div>`;
+}
+
+function renderCap(cap) {
+  const tagsSF = (cap.type === 'sf' || cap.type === 'both') ? '<span class="cap-tag sf">SF</span>' : '';
+  const tagsAI = (cap.type === 'ai' || cap.type === 'both') ? '<span class="cap-tag ai">AI</span>' : '';
+  return `
+    <div class="cap-item" data-type="${cap.type}">
+      <div class="cap-badge ${cap.type}"></div>
+      <div class="cap-name">${cap.name}</div>
+      <div class="cap-tags">${tagsSF}${tagsAI}</div>
+    </div>`;
+}
+
+function applyFilter() {
+  const items = document.querySelectorAll('.cap-item');
+  items.forEach(item => {
+    const type = item.dataset.type;
+    let show = false;
+    if (currentFilter === 'all') show = true;
+    else if (currentFilter === 'sf' && (type === 'sf' || type === 'both')) show = true;
+    else if (currentFilter === 'ai' && (type === 'ai' || type === 'both')) show = true;
+    else if (currentFilter === 'both' && type === 'both') show = true;
+    item.classList.toggle('hidden', !show);
+  });
+}
+</script>
+</body>
+</html>
+```
